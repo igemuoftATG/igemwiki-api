@@ -1,0 +1,37 @@
+{
+  "name": "igemwiki-api",
+  "version": "1.0.0",
+  "description": "NodeJS API for interacting with an igem wiki (downloading, updating pages, images, etc.)",
+  "main": "index.js",
+  "scripts": {
+    "test": "DEBUG=igemwiki-api mocha test/**/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igemuoftATG/igemwiki-api.git"
+  },
+  "keywords": [
+    "igem",
+    "wiki",
+    "mediawiki",
+    "api"
+  ],
+  "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/igemuoftATG/igemwiki-api/issues"
+  },
+  "homepage": "https://github.com/igemuoftATG/igemwiki-api#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "mocha": "^3.0.2"
+  },
+  "dependencies": {
+    "debug": "^2.2.0",
+    "dotenv": "^2.0.0",
+    "readline-sync": "^1.4.4",
+    "request": "^2.74.0",
+    "request-promise-native": "^1.0.3"
+  }
+}

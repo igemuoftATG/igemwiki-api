@@ -33,6 +33,7 @@
   "dependencies": {
     "debug": "^2.2.0",
     "dotenv": "^2.0.0",
+    "htmlparser2": "^3.9.1",
     "readline-sync": "^1.4.4",
     "request": "^2.74.0",
     "request-promise-native": "^1.0.3"

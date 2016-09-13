@@ -7,18 +7,36 @@ const { assert, should } = chai
 should()
 
 
-const { getTeamPages, getTeamTemplates } = require('../index.js')({})
-
 describe('All pages', function() {
-  it('Should return a list of team pages', function() {
-    return getTeamPages().then((pages) => {
-      assert.isOk(pages.length >= 0)
+  describe('With a team with no _', function() {
+    const { getTeamPages, getTeamTemplates } = require('../index.js')({})
+
+    it('Should return a list of team pages', function() {
+      return getTeamPages().then((pages) => {
+        assert.isOk(pages.length >= 0)
+      })
+    })
+
+    it('Should return a list of team templates', function() {
+      return getTeamTemplates().then((templates) => {
+        assert.isOk(templates.length >= 0)
+      })
     })
   })
 
-  it('Should return a list of team templates', function() {
-    return getTeamTemplates().then((templates) => {
-      assert.isOk(templates.length >= 0)
+  describe('With a team with _ in it', function() {
+    const { getTeamPages, getTeamTemplates } = require('../index.js')({ teamName: 'UrbanTundra_Edmonton' })
+
+    it('Should return a list of team pages', function() {
+      return getTeamPages().then((pages) => {
+        assert.isOk(pages.length >= 0)
+      })
+    })
+
+    it('Should return a list of team templates', function() {
+      return getTeamTemplates().then((templates) => {
+        assert.isOk(templates.length >= 0)
+      })
     })
   })
 })

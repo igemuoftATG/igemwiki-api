@@ -23,15 +23,16 @@ describe('Login', function() {
         assert.isOk(Object.keys(jar._jar.store.idx).indexOf('igem.org') >= 0, 'jar does not have igem.org')
       })
     })
+
+    it('Should resolve to a cookie jar with correct username and password from .env', function() {
+      this.timeout(5 * 1000)
+
+      return login({}).then((jar) => {
+        assert.isOk(Object.keys(jar._jar.store.idx).indexOf('igem.org') >= 0, 'jar does not have igem.org')
+      })
+    })
   }
 
-  it('Should resolve to a cookie jar with correct username and password from .env', function() {
-    this.timeout(5 * 1000)
-
-    return login({}).then((jar) => {
-      assert.isOk(Object.keys(jar._jar.store.idx).indexOf('igem.org') >= 0, 'jar does not have igem.org')
-    })
-  })
 
   it('Should reject with a bad username', function() {
     const username = 'foo'

@@ -1,6 +1,6 @@
 'use strict'
 
-require('dotenv').load()
+require('dotenv').load({ silent: true })
 
 const { login, prompt } = require('./lib/login.js')
 

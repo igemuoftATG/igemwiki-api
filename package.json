@@ -24,13 +24,16 @@
   },
   "homepage": "https://github.com/igemuoftATG/igemwiki-api#readme",
   "devDependencies": {
+    "bluebird": "^3.4.6",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "codecov": "^1.0.1",
+    "fs-extra": "^0.30.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2"
   },
   "dependencies": {
+    "cheerio": "^0.22.0",
     "debug": "^2.2.0",
     "dotenv": "^2.0.0",
     "htmlparser2": "^3.9.1",

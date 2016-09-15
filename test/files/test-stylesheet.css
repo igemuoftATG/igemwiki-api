@@ -1,0 +1,14 @@
+.test {
+    animation-name: color_change;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes color_change {
+    0% { color: blue; }
+    25% { color: orange; }
+    50% { color: yellow; }
+    75% { color: black; }
+    100% { color: red; }
+}

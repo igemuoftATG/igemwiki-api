@@ -4,3 +4,4 @@ npm-debug.log
 .env
 test/download
 test/responses
+test/files/test-upload.html

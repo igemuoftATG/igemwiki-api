@@ -46,10 +46,24 @@ describe('Upload', function() {
     })
   })
 
+  it('Should upload a template', function() {
+    this.timeout(10 * 1000)
+
+    return login().then(jar => upload({
+      type: 'template',
+      pageOrImageName: 'test-template',
+      fileName: path.resolve(__dirname, './files/test-template.html'),
+      dir: path.resolve(__dirname, 'responses'),
+      jar
+    })).then((responseDetails) => {
+      console.log('responseDetails: ', responseDetails)
+    })
+  })
+
   it('Should upload a page', function() {
     this.timeout(10 * 1000)
 
-    return fs.readFileAsync(path.resolve(__dirname, './files/test-upload-template.html'), 'utf-8')
+    return fs.readFileAsync(path.resolve(__dirname, './files/test-upload-undated.html'), 'utf-8')
       .then(content => fillVars(content))
       .then(content => fs.writeFileAsync(path.resolve(__dirname, './files/test-upload.html'), content))
       .then(() => login())

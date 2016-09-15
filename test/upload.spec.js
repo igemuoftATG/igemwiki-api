@@ -32,6 +32,20 @@ describe('Upload', function() {
     })
   })
 
+  it('Should upload a script', function() {
+    this.timeout(10 * 1000)
+
+    return login().then(jar => upload({
+      type: 'script',
+      pageOrImageName: 'test-script',
+      fileName: path.resolve(__dirname, './files/test-script.js'),
+      dir: path.resolve(__dirname, 'responses'),
+      jar
+    })).then((responseDetails) => {
+      console.log('responseDetails: ', responseDetails)
+    })
+  })
+
   it('Should upload a page', function() {
     this.timeout(10 * 1000)
 

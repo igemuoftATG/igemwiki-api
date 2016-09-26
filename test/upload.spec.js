@@ -77,4 +77,18 @@ describe('Upload', function() {
         console.log('responseDetails: ', responseDetails)
       })
   })
+
+  it('Should upload an image', function() {
+    this.timeout(10 * 1000)
+
+    return login().then(jar => upload({
+      type: 'image',
+      pageOrImageName: 'igem-logo.png',
+      fileName: path.resolve(__dirname, './files/igem-logo.png'),
+      dir: path.resolve(__dirname, 'responses'),
+      jar
+    })).then((responseDetails) => {
+      console.log('responseDetails: ', responseDetails)
+    })
+  })
 })

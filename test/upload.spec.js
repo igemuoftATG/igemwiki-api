@@ -51,7 +51,7 @@ describe('Upload', function() {
 
   describe('Images', function() {
     it('Should upload an image', function() {
-      this.timeout(10 * 1000)
+      this.timeout(30 * 1000)
 
       return login().then(jar => upload({
         type: 'image',
@@ -158,3 +158,4 @@ describe('Upload', function() {
     })
   })
 })
+

@@ -7,7 +7,6 @@ require('dotenv').load({ silent: true })
 const { login, prompt } = require('./lib/login.js')
 const { currentYear } = require('./lib/util.js')
 const downloadPage = require('./lib/download-page.js')
-const { compareImage } = require('./lib/compare.js')
 
 module.exports = ({ year = currentYear, teamName }) => {
   if (!teamName) {
@@ -29,7 +28,6 @@ module.exports = ({ year = currentYear, teamName }) => {
     getTeamTemplates,
     downloadPage,
     upload,
-    fileSearch,
-    compareImage
+    fileSearch
   }
 }

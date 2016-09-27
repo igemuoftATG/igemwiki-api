@@ -14,7 +14,7 @@ const { fileSearch, compareImage } = require('../index.js')({ teamName: 'Toronto
 
 describe('Compare', function() {
   it('Should find an equal image', function() {
-    this.timeout(30 * 1000)
+    this.timeout(5 * 1000)
 
     return fileSearch({ medianame: 'igem-logo.png' })
       .then(imageUrl => compareImage({ url: imageUrl, fileName: path.resolve(__dirname, './files/igem-logo.png') }))
@@ -22,7 +22,7 @@ describe('Compare', function() {
   })
 
   it('Should find a disequal image', function() {
-    this.timeout(30 * 1000)
+    this.timeout(5 * 1000)
 
     return fileSearch({ medianame: 'igem-logo.png' })
       .then(imageUrl => compareImage({ url: imageUrl, fileName: path.resolve(__dirname, './files/abstract-cells.jpg') }))

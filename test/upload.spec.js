@@ -18,64 +18,35 @@ const fillVars = (str) => str
   .replace('{{ DATE }}', new Date().toString())
 
 describe('Upload', function() {
-  it('Should upload a stylesheet', function() {
-    this.timeout(10 * 1000)
+  describe('Page', function() {
+    it('Should upload a page', function() {
+      this.timeout(10 * 1000)
 
-    return login().then(jar => upload({
-      type: 'stylesheet',
-      pageOrImageName: 'test-stylesheet',
-      fileName: path.resolve(__dirname, './files/test-stylesheet.css'),
-      dir: path.resolve(__dirname, 'responses'),
-      jar
-    })).then((responseDetails) => {
-      console.log('responseDetails: ', responseDetails)
+      return login().then(jar => upload({
+        type: 'stylesheet',
+        pageOrImageName: 'test-stylesheet',
+        fileName: path.resolve(__dirname, './files/test-stylesheet.css'),
+        dir: path.resolve(__dirname, 'responses'),
+        jar,
+        force: true
+      })).then((responseDetails) => {
+        assert.isOk(responseDetails.status === 'uploaded')
+      })
     })
-  })
 
-  it('Should upload a script', function() {
-    this.timeout(10 * 1000)
+    it('Should skip uploading an existing page', function() {
+      this.timeout(10 * 1000)
 
-    return login().then(jar => upload({
-      type: 'script',
-      pageOrImageName: 'test-script',
-      fileName: path.resolve(__dirname, './files/test-script.js'),
-      dir: path.resolve(__dirname, 'responses'),
-      jar
-    })).then((responseDetails) => {
-      console.log('responseDetails: ', responseDetails)
-    })
-  })
-
-  it('Should upload a template', function() {
-    this.timeout(10 * 1000)
-
-    return login().then(jar => upload({
-      type: 'template',
-      pageOrImageName: 'test-template',
-      fileName: path.resolve(__dirname, './files/test-template.html'),
-      dir: path.resolve(__dirname, 'responses'),
-      jar
-    })).then((responseDetails) => {
-      console.log('responseDetails: ', responseDetails)
-    })
-  })
-
-  it('Should upload a page', function() {
-    this.timeout(10 * 1000)
-
-    return fs.readFileAsync(path.resolve(__dirname, './files/test-upload-undated.html'), 'utf-8')
-      .then(content => fillVars(content))
-      .then(content => fs.writeFileAsync(path.resolve(__dirname, './files/test-upload.html'), content))
-      .then(() => login())
-      .then(jar => upload({
-        type: 'page',
-        pageOrImageName: 'test-upload',
-        fileName: path.resolve(__dirname, './files/test-upload.html'),
+      return login().then(jar => upload({
+        type: 'stylesheet',
+        pageOrImageName: 'test-stylesheet',
+        fileName: path.resolve(__dirname, './files/test-stylesheet.css'),
         dir: path.resolve(__dirname, 'responses'),
         jar
       })).then((responseDetails) => {
-        console.log('responseDetails: ', responseDetails)
+        assert.isOk(responseDetails.status === 'skipped')
       })
+    })
   })
 
   describe('Images', function() {
@@ -119,7 +90,70 @@ describe('Upload', function() {
         force: true,
         jar
       })).then((responseDetails) => {
+        // assert.isOk(responseDetails.status === 'skipped')
         assert.isOk(responseDetails.status === 'uploaded')
+      })
+    })
+  })
+
+  describe('Full page and assets', function() {
+    it('Should upload a stylesheet', function() {
+      this.timeout(10 * 1000)
+
+      return login().then(jar => upload({
+        type: 'stylesheet',
+        pageOrImageName: 'test-stylesheet',
+        fileName: path.resolve(__dirname, './files/test-stylesheet.css'),
+        dir: path.resolve(__dirname, 'responses'),
+        jar
+      })).then((responseDetails) => {
+        assert.isOk(responseDetails.status === 'skipped')
+      })
+    })
+
+    it('Should upload a script', function() {
+      this.timeout(10 * 1000)
+
+      return login().then(jar => upload({
+        type: 'script',
+        pageOrImageName: 'test-script',
+        fileName: path.resolve(__dirname, './files/test-script.js'),
+        dir: path.resolve(__dirname, 'responses'),
+        jar
+      })).then((responseDetails) => {
+        assert.isOk(responseDetails.status === 'skipped')
+      })
+    })
+
+    it('Should upload a template', function() {
+      this.timeout(10 * 1000)
+
+      return login().then(jar => upload({
+        type: 'template',
+        pageOrImageName: 'test-template',
+        fileName: path.resolve(__dirname, './files/test-template.html'),
+        dir: path.resolve(__dirname, 'responses'),
+        jar
+      })).then((responseDetails) => {
+        assert.isOk(responseDetails.status === 'skipped')
+      })
+    })
+
+    it('Should upload a page that uses a stylesheet, script, and template', function() {
+      this.timeout(10 * 1000)
+
+      return fs.readFileAsync(path.resolve(__dirname, './files/test-upload-undated.html'), 'utf-8')
+      .then(content => fillVars(content))
+      .then(content => fs.writeFileAsync(path.resolve(__dirname, './files/test-upload.html'), content))
+      .then(() => login())
+      .then(jar => upload({
+        type: 'page',
+        pageOrImageName: 'test-upload',
+        fileName: path.resolve(__dirname, './files/test-upload.html'),
+        dir: path.resolve(__dirname, 'responses'),
+        jar
+      })).then((responseDetails) => {
+        assert.isOk(responseDetails.status === 'skipped')
       })
     })
   })

@@ -79,6 +79,21 @@ describe('Upload', function() {
   })
 
   describe('Images', function() {
+    it('Should upload an image', function() {
+      this.timeout(10 * 1000)
+
+      return login().then(jar => upload({
+        type: 'image',
+        pageOrImageName: 'igem-logo.png',
+        fileName: path.resolve(__dirname, './files/igem-logo.png'),
+        dir: path.resolve(__dirname, 'responses'),
+        jar,
+        force: true
+      })).then((responseDetails) => {
+        assert.isOk(responseDetails.status === 'uploaded')
+      })
+    })
+
     it('Should skip uploading an image that exists', function() {
       this.timeout(10 * 1000)
 

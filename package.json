@@ -32,7 +32,8 @@
     "htmlparser2": "^3.9.1",
     "readline-sync": "^1.4.4",
     "request": "^2.74.0",
-    "request-promise-native": "^1.0.3"
+    "request-promise-native": "^1.0.3",
+    "stream-equal": "^0.1.8"
   },
   "devDependencies": {
     "chai": "^3.5.0",

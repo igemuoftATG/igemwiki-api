@@ -10,7 +10,8 @@ chai.use(chaiAsPromised)
 const { assert, should } = chai
 should()
 
-const { fileSearch, compareImage } = require('../index.js')({ teamName: 'Toronto' })
+const { fileSearch } = require('../index.js')({ teamName: 'Toronto' })
+const { compareImage } = require('../lib/compare.js')
 
 describe('Compare', function() {
   it('Should find an equal image', function() {

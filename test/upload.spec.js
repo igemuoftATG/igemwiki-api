@@ -153,7 +153,7 @@ describe('Upload', function() {
         dir: path.resolve(__dirname, 'responses'),
         jar
       })).then((responseDetails) => {
-        assert.isOk(responseDetails.status === 'skipped')
+        assert.isOk(responseDetails.status === 'uploaded')
       })
     })
   })

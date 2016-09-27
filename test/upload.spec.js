@@ -78,17 +78,34 @@ describe('Upload', function() {
       })
   })
 
-  it('Should upload an image', function() {
-    this.timeout(10 * 1000)
+  describe('Images', function() {
+    it('Should skip uploading an image that exists', function() {
+      this.timeout(10 * 1000)
 
-    return login().then(jar => upload({
-      type: 'image',
-      pageOrImageName: 'igem-logo.png',
-      fileName: path.resolve(__dirname, './files/igem-logo.png'),
-      dir: path.resolve(__dirname, 'responses'),
-      jar
-    })).then((responseDetails) => {
-      console.log('responseDetails: ', responseDetails)
+      return login().then(jar => upload({
+        type: 'image',
+        pageOrImageName: 'igem-logo.png',
+        fileName: path.resolve(__dirname, './files/igem-logo.png'),
+        dir: path.resolve(__dirname, 'responses'),
+        jar
+      })).then((responseDetails) => {
+        assert.isOk(responseDetails.status === 'skipped')
+      })
+    })
+
+    it('Should upload a high resolution image', function() {
+      this.timeout(10 * 1000)
+
+      return login().then(jar => upload({
+        type: 'image',
+        pageOrImageName: 'abstract-cells.jpg',
+        fileName: path.resolve(__dirname, './files/abstract-cells.jpg'),
+        dir: path.resolve(__dirname, 'responses'),
+        force: true,
+        jar
+      })).then((responseDetails) => {
+        assert.isOk(responseDetails.status === 'uploaded')
+      })
     })
   })
 })

@@ -28,12 +28,16 @@ describe('All pages', function() {
     const { getTeamPages, getTeamTemplates } = require('../index.js')({ teamName: 'UrbanTundra_Edmonton' })
 
     it('Should return a list of team pages', function() {
+      this.timeout(5 * 1000)
+
       return getTeamPages().then((pages) => {
         assert.isOk(pages.length >= 0)
       })
     })
 
     it('Should return a list of team templates', function() {
+      this.timeout(5 * 1000)
+
       return getTeamTemplates().then((templates) => {
         assert.isOk(templates.length >= 0)
       })

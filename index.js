@@ -8,7 +8,7 @@ const { login, prompt } = require('./lib/login.js')
 const { currentYear } = require('./lib/util.js')
 const downloadPage = require('./lib/download-page.js')
 
-module.exports = ({ year = currentYear, teamName }) => {
+module.exports = ({ year = currentYear, teamName } = {}) => {
   if (!teamName) {
     if (process.env.teamName) {
       teamName = process.env.teamName
@@ -18,6 +18,7 @@ module.exports = ({ year = currentYear, teamName }) => {
   }
 
   const { getTeamPages, getTeamTemplates } = require('./lib/all-pages.js')({ year, teamName })
+  const downloadAll = require('./lib/download-all.js')({ year, teamName })
   const upload = require('./lib/upload.js')({ year, teamName })
   const fileSearch = require('./lib/file-search.js')({ year })
 
@@ -27,6 +28,7 @@ module.exports = ({ year = currentYear, teamName }) => {
     getTeamPages,
     getTeamTemplates,
     downloadPage,
+    downloadAll,
     upload,
     fileSearch
   }

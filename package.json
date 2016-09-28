@@ -1,7 +1,7 @@
 {
   "name": "igemwiki-api",
   "version": "1.0.0",
-  "description": "NodeJS API for interacting with an igem wiki (downloading, updating pages, images, etc.)",
+  "description": "NodeJS API and CLI for interacting with an igem wiki (downloading, updating pages, images, etc.)",
   "main": "index.js",
   "scripts": {
     "test": "DEBUG=igemwiki-api mocha test/**/*.spec.js",

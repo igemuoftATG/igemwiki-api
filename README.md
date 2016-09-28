@@ -11,8 +11,9 @@ npm install --save igemwiki-api
 - [API](#api)
   * [login](#login)
   * [getTeamPages, getTemplatePages](#getteampages-getteamtemplates)
-  * [downloadPage](#downloadpage)
+  * [downloadAll](#downloadall)
   * [upload](#upload)
+    - [image upload](#image-upload)
 - [CLI](#cli)
 
 ## API
@@ -108,31 +109,36 @@ igemwiki.getTeamTemplates().then(templates => console.log(templates)) // array o
 
 See [all-pages.spec.js](./test/all-pages.spec.js).
 
-### downloadPage
+### downloadAll
 
 Not just a simple `curl`. Pulls out content of text box from `?action=edit`
-page. Takes `page` and `dir` (download directory) in options.
+page. Takes `dir` (download directory) in options. Use `downloadAll` to download
+all team pages *and* templates.
 
 ```javascript
-// ES2015 destructuring. same as getTeamPages = igemwiki.getTeamPages
-const { getTeamPages, getTeamTemplates, downloadPage } = require('igemwiki-api')({})
+const path = require('path')
+const { downloadAll } = require('igemwiki-api')()
 
-// Turn [ ['a', 'b'], ['c'] ] into ['a', 'b', 'c']
-const flatMap = (arr) => arr.reduce((flattened, current) => flattened.concat(current), [])
-
-// Map urls into an array of downloadPage promises
-const pageDownloads = Promise.all([ getTeamPages(), getTeamTemplates() ])
-  .then(pages => flatMap(pages).map(url => downloadPage({ page: url, dir: './downloads' })))
-
-// Download all pages
-Promise.all(pageDownloads)
-  .then(() => console.log('Downloads finished'))
-  .catch(error => console.error(error))
+downloadAll({ dir: path.resolve(__dirname, './downloads') }).then(function (results) {
+  console.log('Download results: ', results)
+})
 ```
 
-See [download-page.spec.js](./test/download-page.spec.js).
+There is also `downloadPage` to download one page at a time. It takes `page` and `dir`:
+
+```javascript
+downloadPage({
+  page: 'http://2016.igem.org/Team:Toronto/test-upload',
+  dir: downloadDir
+}).then(result => console.log('Download: ', result))
+```
+
+See [download.spec.js](./test/download.spec.js).
 
 ### upload
+
+Upload file contents into pages, templates, or images. If local content matches
+existing live content, the upload will be skipped, unless `force: true` is set.
 
 ```javascript
 // Need cookie jar from login
@@ -145,6 +151,7 @@ login()
     pageOrImageName: 'test-upload', // will create Team:${teamName}/${pageOrImageName} for 'page', or Template:${teamName}/{css|js}/..
     fileName: './src/mypage.html', // the source for upload. what is entered into update page text box.
     dir: './responses' // where to store upload responses and metadata
+    force: false // force upload even if live/local content match, default is false
   })
 })
 .then(function(results) {
@@ -163,6 +170,21 @@ current date when tests are ran.
 | `script`     | [test-script.js](./test/files/test-script.js)                     | [Template:Toronto/js/test-script](http://2016.igem.org/Template:Toronto/js/test-script?action=edit)           |
 | `template`   | [test-template.html](./test/files/test-template.html)             | [Template:Toronto/test-template](http://2016.igem.org/Template:Toronto/test-template?action=edit)             |
 | `page`       | [test-upload-undated.html](./test/files/test-upload-undated.html) | [Team:Toronto/test-upload](http://2016.igem.org/Team:Toronto/test-upload)                                     |
+
+#### image upload
+
+Just need to set `type` to image. `pageOrImageName` **must be the image
+filename, including extension**.
+
+```javascript
+login().then(jar => upload({
+  type: 'image',
+  pageOrImageName: 'igem-logo.png', // Note full file name including extension
+  fileName: './images/igem-logo.png' // Good idea to match this to pageOrImageName,
+  dir: './responses',
+  jar // with ES2015, this is the same as jar: jar
+})).then(results => console.log(results.target)) // results.target is the direct image link
+```
 
 ## CLI
 

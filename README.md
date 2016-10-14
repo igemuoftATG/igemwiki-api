@@ -92,7 +92,7 @@ The `teamName` is also present in the environment configuration. So you can requ
 const igemwiki = require('igemwiki-api')({})
 ```
 
-**TODO** make it so `require('igemwiki-api')()` works.
+**TODO** make it so `require('igemwiki-api')()` works. (I think it does atm)
 
 See [login.spec.js](./test/login.spec.js).
 

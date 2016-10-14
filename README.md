@@ -8,6 +8,10 @@ NodeJS and CLI API for interacting with an igem wiki (downloading/uploading page
 npm install --save igemwiki-api
 ```
 
+## Recipes
+
+See [Recipes](./recipes).
+
 - [API](#api)
   * [login](#login)
   * [getTeamPages, getTemplatePages](#getteampages-getteamtemplates)

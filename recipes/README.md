@@ -569,4 +569,17 @@ then upload later?
 
 It's not too difficult - but we will need to manage a local development copy and
 a live deployment copy. The main differences are just how we load images, links,
-CSS, and JS.
+CSS, and JS. One way to achieve this is by using a templating tool like
+[Handlebars][Handlebars] and have different functions for rendering a link
+whether we are in "dev mode" or "live mode".
+
+[Handlebars]: http://handlebarsjs.com/
+
+## Using Markdown
+
+[Markdown][Markdown] is a great way to write content. It would great if we could
+write each wiki page's content in markdown, then convert it to HTML and include
+it in our site. One tool to do this is [marked][marked].
+
+[Markdown]: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+[marked]: https://github.com/chjj/marked

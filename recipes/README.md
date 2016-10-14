@@ -235,8 +235,8 @@ Then `header.html` will look like:
 ```html
 <html>
 
-<link rel="stylesheet" href="http://2016.igem.org/Template:Toronto/css/simple/vendors" />
-<link rel="stylesheet" href="http://2016.igem.org/Template:Toronto/css/simple/styles" />
+<link rel="stylesheet" href="http://2016.igem.org/Template:Toronto/css/simple/vendors?action=raw&ctype=text/css" />
+<link rel="stylesheet" href="http://2016.igem.org/Template:Toronto/css/simple/styles?action=raw&ctype=text/css" />
 
 </html>
 ```
@@ -246,8 +246,8 @@ and `footer.html` will look like:
 ```html
 <html>
 
-<script src="http://2016.igem.org/Template:Toronto/js/simple/vendor"></script>
-<script src="http://2016.igem.org/Team:Toronto/js/simple/main"></script>
+<script src="http://2016.igem.org/Template:Toronto/js/simple/vendor?action=raw&ctype=text/javascript"></script>
+<script src="http://2016.igem.org/Team:Toronto/js/simple/main?action=raw&ctype=text/javascript"></script>
 
 </html>
 ```
@@ -434,3 +434,139 @@ Uploads completed
 Some of mine are `skipped` since I ran it a bunch of times. Sometimes the
 compare method finds the local and live copies non-equal when they are, seems
 to happen on large minified vendor files.
+
+## Better Dependency Management
+
+Up above I directly copied the bootstrap files into `vendors.css` and
+`vendor.js`. This is not scalable, and will get messy fast once we have a lot of
+dependencies. [Bower][Bower] is a tool that can be used to achieve this. For
+this I will be setting up a site in [simple2](./simple2).
+
+We install bower, initialize the `bower.json` file, and then install Bootstrap:
+
+```bash
+npm install -g bower
+bower init # inside simple2
+bower install bootstrap --save # adds bootstrap to bower.json
+```
+
+As well I have also moved the files from before into a `src` directory and
+`upload.js` into `scripts`. Our directory structure looks like this now:
+
+```bash
+.
+├── bower.json
+├── bower_components
+│   ├── bootstrap
+│   └── jquery
+├── package.json
+├── src
+│   ├── css
+│   │   └── styles.css
+│   ├── index.html
+│   ├── js
+│   │   └── main.js
+│   └── templates
+│       ├── footer.html
+│       └── header.html
+└── scripts
+    └── upload.js
+```
+
+With [Gulp][Gulp], which is a "task runner" we can isolate and compose small
+pieces of JS. One of these things is **bundle all bower dependencies into one
+file**, which then lets us easily manage multiple dependencies.
+
+```bash
+npm install -g gulp
+npm install --save-dev main-bower-files gulp-uglify gulp-concat gulp-cssmin gulp-util
+```
+
+Then in `gulpfile.js`:
+
+```javascript
+const gulp = require('gulp')
+const concat = require('gulp-concat')
+const cssmin = require('gulp-cssmin')
+const gutil = require('gulp-util')
+const uglify = require('gulp-uglify')
+
+const mainBowerFiles = require('main-bower-files')
+
+const dests = {
+  js: './dist/js',
+  css: './dist/css'
+}
+
+gulp.task('bower:js', () => gulp
+  .src(mainBowerFiles('**/*.js'), { base: './bower_components' })
+  .pipe(concat('vendor.js'))
+  .pipe(uglify().on('error', gutil.log))
+  .pipe(gulp.dest(dests.js))
+)
+
+gulp.task('bower:css', () => gulp
+  .src(mainBowerFiles('**/*.css'), { base: './bower_components' })
+  .pipe(concat('vendor.css'))
+  .pipe(cssmin())
+  .pipe(gulp.dest(dests.css))
+)
+```
+
+Then if you run
+
+```bash
+gulp bower:js
+gulp bower:css
+```
+
+the file `dists/js/vendor.js` will be created. However we are not so lucky with
+Bootstrap. Sometimes with Bower you need to provided "overrides" specifying
+which files to take from a library, so we add/modify the `overrides` key in
+`bower.json`:
+
+```json
+"bootstrap": {
+  "main": [
+    "dist/js/bootstrap.js",
+    "dist/css/bootstrap.css",
+    "less/bootstrap.less"
+  ]
+}
+```
+
+Then run `gulp bower:css` again and you should have a `dist/css/vendors.css`
+file.
+
+Now if we want to install more libraries, like for example [Font
+Awesome][Font-Awesome], we can simply install it (`bower install fontawesome
+--save`) and rerun our task. If the files are not being picked up for whatever
+reason, take a look inside the folder (`ls bower_components/fontawesome`) and
+add a custom override:
+
+```json
+"font-awesome": {
+  "main": [
+    "css/font-awesome.min.css"
+  ]
+}
+```
+
+[Font-Awesome]: http://fontawesome.io/
+[Gulp]: http://gulpjs.com/
+
+As well it would not be too difficult to modify our upload script `upload.js` to
+handle the new location of these vendor files. As well the upload script could
+be copy/pasted into gulp and ran as a gulp task. But there is more to do, so we
+will leave that to later.
+
+## Working Locally
+
+The setup above works fine in an edit-upload-refresh cycle, and you can imagine
+it would not be difficult to expand it to include other pages. However, what if
+we would like to iterate on the website locally (since it is much faster) and
+then upload later?
+
+It's not too difficult - but we will need to manage a local development copy and
+a live deployment copy. The main differences are just how we load images, links,
+CSS, and JS.

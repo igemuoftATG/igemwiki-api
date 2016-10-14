@@ -1,6 +1,6 @@
 {
   "name": "igemwiki-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NodeJS API and CLI for interacting with an igem wiki (downloading, updating pages, images, etc.)",
   "main": "index.js",
   "scripts": {

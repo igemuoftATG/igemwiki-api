@@ -220,21 +220,23 @@ what to call our wiki pages that server as CSS and JS sources**. I'm using the
 following mapping, where I simply follow the same path but just remove the file
 extension:
 
-| Local             | Wiki                 |
-|-------------------|----------------------|
-| `/css/[name].css` | `/simple/css/[name]` |
-| `/js/[name].js`   | `/simple/js/[name]`  |
+| Local             | Wiki                                     |
+|-------------------|------------------------------------------|
+| `/css/[name].css` | `/simple/[name]` -> `/css/simple/[name]` |
+| `/js/[name].js`   | `/simple/[name]` -> `/js/simple/name`    |
 
 I am prepending with `/simple` just so as not to interfere with our team's
-actual wiki.
+actual wiki. When setting `type` to "stylesheet" or "script" when calling
+`igemwiki.upload({ /* options */ })`, the tool will automatically upload to a
+template and prepend the url with `css` or `js`.
 
 Then `header.html` will look like:
 
 ```html
 <html>
 
-<link rel="stylesheet" href="http://2016.igem.org/Team:Toronto/simple/css/vendors.css" />
-<link rel="stylesheet" href="http://2016.igem.org/Team:Toronto/simple/css/styles.css" />
+<link rel="stylesheet" href="http://2016.igem.org/Template:Toronto/css/simple/vendors" />
+<link rel="stylesheet" href="http://2016.igem.org/Template:Toronto/css/simple/styles" />
 
 </html>
 ```
@@ -244,8 +246,8 @@ and `footer.html` will look like:
 ```html
 <html>
 
-<script src="http://2016.igem.org/Team:Toronto/simple/js/vendors.js"></script>
-<script src="http://2016.igem.org/Team:Toronto/simple/js/main.js"></script>
+<script src="http://2016.igem.org/Template:Toronto/js/simple/vendor"></script>
+<script src="http://2016.igem.org/Team:Toronto/js/simple/main"></script>
 
 </html>
 ```
@@ -265,7 +267,7 @@ some dependencies, namely, `igemwiki-api` and [globby][globby]:
 
 ```
 npm init // add --yes if you want to skip questions
-npm install --save igemwiki-api globby // the --save makes it record dependencies in package.json
+npm install --save igemwiki-api globby lodash bluebird // the --save makes it record dependencies in package.json
 ```
 
 Then lets start writing `upload.js`:
@@ -275,7 +277,9 @@ Then lets start writing `upload.js`:
 const path = require('path')
 
 const igemwiki = require('igemwiki-api')({ year: 2016, teamName: 'Toronto' })
+const Promise = require('bluebird')
 const globby = require('globby')
+const _ = require('lodash')
 
 globby([
   './index.html',

@@ -159,7 +159,7 @@ login()
   return upload({
     jar: jar,
     type: 'page', // or stylesheet, script, template, image
-    pageOrImageName: 'test-upload', // will create Team:${teamName}/${pageOrImageName} for 'page', or Template:${teamName}/{css|js}/..
+    dest: 'test-upload', // will create Team:${teamName}/${dest} for 'page', or Template:${teamName}/{css|js}/..
     fileName: './src/mypage.html', // the source for upload. what is entered into update page text box.
     dir: './responses' // where to store upload responses and metadata
     force: false // force upload even if live/local content match, default is false
@@ -184,14 +184,14 @@ current date when tests are ran.
 
 #### image upload
 
-Just need to set `type` to image. `pageOrImageName` **must be the image
+Just need to set `type` to image. `dest` **must be the image
 filename, including extension**.
 
 ```javascript
 login().then(jar => upload({
   type: 'image',
-  pageOrImageName: 'igem-logo.png', // Note full file name including extension
-  fileName: './images/igem-logo.png' // Good idea to match this to pageOrImageName,
+  dest: 'igem-logo.png', // Note full file name including extension
+  fileName: './images/igem-logo.png' // Good idea to match this to dest,
   dir: './responses',
   jar // with ES2015, this is the same as jar: jar
 })).then(results => console.log(results.target)) // results.target is the direct image link

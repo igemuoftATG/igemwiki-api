@@ -25,7 +25,7 @@ describe('Upload', function() {
       return login().then(jar => upload({
         type: 'stylesheet',
         dest: 'test-stylesheet',
-        fileName: path.resolve(__dirname, './files/test-stylesheet.css'),
+        source: path.resolve(__dirname, './files/test-stylesheet.css'),
         dir: path.resolve(__dirname, 'responses'),
         jar,
         force: true
@@ -40,7 +40,7 @@ describe('Upload', function() {
       return login().then(jar => upload({
         type: 'stylesheet',
         dest: 'test-stylesheet',
-        fileName: path.resolve(__dirname, './files/test-stylesheet.css'),
+        source: path.resolve(__dirname, './files/test-stylesheet.css'),
         dir: path.resolve(__dirname, 'responses'),
         jar
       })).then((responseDetails) => {
@@ -56,7 +56,7 @@ describe('Upload', function() {
       return login().then(jar => upload({
         type: 'image',
         dest: 'igem-logo.png',
-        fileName: path.resolve(__dirname, './files/igem-logo.png'),
+        source: path.resolve(__dirname, './files/igem-logo.png'),
         dir: path.resolve(__dirname, 'responses'),
         jar,
         force: true
@@ -71,7 +71,7 @@ describe('Upload', function() {
       return login().then(jar => upload({
         type: 'image',
         dest: 'igem-logo.png',
-        fileName: path.resolve(__dirname, './files/igem-logo.png'),
+        source: path.resolve(__dirname, './files/igem-logo.png'),
         dir: path.resolve(__dirname, 'responses'),
         jar
       })).then((responseDetails) => {
@@ -85,7 +85,7 @@ describe('Upload', function() {
       return login().then(jar => upload({
         type: 'image',
         dest: 'abstract-cells.jpg',
-        fileName: path.resolve(__dirname, './files/abstract-cells.jpg'),
+        source: path.resolve(__dirname, './files/abstract-cells.jpg'),
         dir: path.resolve(__dirname, 'responses'),
         force: true,
         jar
@@ -103,7 +103,7 @@ describe('Upload', function() {
       return login().then(jar => upload({
         type: 'stylesheet',
         dest: 'test-stylesheet',
-        fileName: path.resolve(__dirname, './files/test-stylesheet.css'),
+        source: path.resolve(__dirname, './files/test-stylesheet.css'),
         dir: path.resolve(__dirname, 'responses'),
         jar
       })).then((responseDetails) => {
@@ -117,7 +117,7 @@ describe('Upload', function() {
       return login().then(jar => upload({
         type: 'script',
         dest: 'test-script',
-        fileName: path.resolve(__dirname, './files/test-script.js'),
+        source: path.resolve(__dirname, './files/test-script.js'),
         dir: path.resolve(__dirname, 'responses'),
         jar
       })).then((responseDetails) => {
@@ -131,7 +131,7 @@ describe('Upload', function() {
       return login().then(jar => upload({
         type: 'template',
         dest: 'test-template',
-        fileName: path.resolve(__dirname, './files/test-template.html'),
+        source: path.resolve(__dirname, './files/test-template.html'),
         dir: path.resolve(__dirname, 'responses'),
         jar
       })).then((responseDetails) => {
@@ -149,7 +149,7 @@ describe('Upload', function() {
       .then(jar => upload({
         type: 'page',
         dest: 'test-upload',
-        fileName: path.resolve(__dirname, './files/test-upload.html'),
+        source: path.resolve(__dirname, './files/test-upload.html'),
         dir: path.resolve(__dirname, 'responses'),
         jar
       })).then((responseDetails) => {

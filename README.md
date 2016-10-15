@@ -160,8 +160,7 @@ login()
     jar: jar,
     type: 'page', // or stylesheet, script, template, image
     dest: 'test-upload', // will create Team:${teamName}/${dest} for 'page', or Template:${teamName}/{css|js}/..
-    fileName: './src/mypage.html', // the source for upload. what is entered into update page text box.
-    dir: './responses' // where to store upload responses and metadata
+    source: './src/mypage.html', // the source for upload. what is entered into update page text box.
     force: false // force upload even if live/local content match, default is false
   })
 })
@@ -191,8 +190,7 @@ filename, including extension**.
 login().then(jar => upload({
   type: 'image',
   dest: 'igem-logo.png', // Note full file name including extension
-  fileName: './images/igem-logo.png' // Good idea to match this to dest,
-  dir: './responses',
+  source: './images/igem-logo.png' // Good idea to match this to dest,
   jar // with ES2015, this is the same as jar: jar
 })).then(results => console.log(results.target)) // results.target is the direct image link
 ```

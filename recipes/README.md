@@ -405,9 +405,8 @@ Promise.all([
     confs = confs.map(c => ({
       jar: jar,
       type: c.type,
-      pageOrImageName: c.page,
-      fileName: c.fileName,
-      dir: './responses',
+      dest: c.page,
+      source: c.fileName,
       // force: true
     }))
 

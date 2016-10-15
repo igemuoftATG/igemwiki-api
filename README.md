@@ -12,6 +12,8 @@ npm install --save igemwiki-api
 
 See [Recipes](./recipes).
 
+## Contents
+
 - [API](#api)
   * [login](#login)
   * [getTeamPages, getTemplatePages](#getteampages-getteamtemplates)
@@ -46,8 +48,10 @@ Once you require the module and call it with options, the rest of the API become
 
 ### Login
 
+Logging in is required for most actions. It resolves to a cookie jar.
+
 ```javascript
-const igemwiki = require('igemwiki-api')({ teamName: 'Toronto' })
+const igemwiki = require('igemwiki-api')({ year: 2016, teamName: 'Toronto' })
 
 igemwiki.login({
   username: 'randomuser',
@@ -59,44 +63,47 @@ igemwiki.login({
 })
 ```
 
-Obviously you would not want to expose your `username` and `password`. As such, a convenience function `prompt` is provided.
-Use it like this:
+Obviously you would not want to expose your `username` and `password`. As such,
+if one of `username` or `password` is not passed in, you will be asked to enter
+them in a prompt:
 
 ```javascript
-const userDetails = igemwiki.prompt()
-
-igemwiki.login({
-  username: userDetails.username,
-  password: userDetails.password
-})
+igemwiki.login().then(jar => console.log('Cookie jar: ', jar))
 ```
 
-Or like this (**TODO**):
-
-```javascript
-igemwiki.login({ prompt: true })
-```
-
-However the prompt method falls apart on a serverside or continuous integration
+However the prompt method fails on a serverside or continuous integration
 platform. It also just annoying to repeatedly enter the same login information
 over and over. As per the [Twelve-Factor App](https://12factor.net), **sensitive
 configuration should be stored in the enviroment**. If a `.env` file is present,
-`igemwiki-api` will pick values out of there if they are not provided as options.
-To enable this, copy [sample.env](./sample.env) into `.env` (and **do not ever
-commit .env**) and change the values. Make sure to leave no spaces around `=` in
-`key=val`. Then you can login like this:
+`igemwiki-api` will pick values out of there if they are not provided as
+options.  To enable this, copy [sample.env](./sample.env) into `.env` (and **do
+not ever commit .env**) and change the values. Make sure to leave no spaces
+around `=` in `key=val`. Instead of using `.env` file, you can also just export
+the variable in your current shell:
+
+```bash
+export username=jmazz
+export password=superSecretPassword
+```
+
+These variables will then be available from `process.env.username` and
+`process.env.password` within Node. In fact, then `.env` method just uses
+[dotenv](https://github.com/motdotla/dotenv) to load key/value pairs from the
+`.env` file into `process.env`. The benefit of providing the `.env` method is
+that `sample.env` makes it clear which values need to be set.
+
+Then you can login like this and won't be prompted:
 
 ```javascript
 igemwiki.login()
 ```
 
+TODO take this out. Make it so `year` and `teamName` NEED to be passed in.
 The `teamName` is also present in the environment configuration. So you can require the module like so:
 
 ```javascript
 const igemwiki = require('igemwiki-api')({})
 ```
-
-**TODO** make it so `require('igemwiki-api')()` works. (I think it does atm)
 
 See [login.spec.js](./test/login.spec.js).
 

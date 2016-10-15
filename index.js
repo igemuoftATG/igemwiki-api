@@ -20,7 +20,7 @@ module.exports = ({ year = currentYear, teamName } = {}) => {
   const { getTeamPages, getTeamTemplates } = require('./lib/all-pages.js')({ year, teamName })
   const downloadAll = require('./lib/download-all.js')({ year, teamName })
   const upload = require('./lib/upload.js')({ year, teamName })
-  const fileSearch = require('./lib/file-search.js')({ year })
+  const fileSearch = require('./lib/file-search.js')({ year, teamName })
 
   return {
     login,

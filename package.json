@@ -7,6 +7,9 @@
     "test": "DEBUG=igemwiki-api mocha test/**/*.spec.js",
     "coverage": "istanbul cover _mocha --report lcovonly -- -R spec && rm -rf ./coverage"
   },
+  "bin": {
+    "igemwiki": "bin.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/igemuoftATG/igemwiki-api.git"
@@ -26,6 +29,7 @@
   "dependencies": {
     "bluebird": "^3.4.6",
     "cheerio": "^0.22.0",
+    "cli": "^1.0.0",
     "debug": "^2.2.0",
     "dotenv": "^2.0.0",
     "fs-extra": "^0.30.0",

@@ -199,4 +199,17 @@ login().then(jar => upload({
 
 ## CLI
 
-WIP
+### backup
+
+Runs `igemwiki.downloadALL({ dir })` behind the scenes.
+
+```
+Usage:
+  igemwiki backup [OPTIONS] [ARGS]
+
+Options:
+  -y, --year [NUMBER]    Year to download pages from (Default is current year)
+  -t, --teamName STRING  Team name
+  -d, --dir [DIR]        Download directory (Default is ./backups)
+  -h, --help             Display help and usage details
+```

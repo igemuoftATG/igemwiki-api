@@ -17,6 +17,8 @@ See [Recipes](./recipes).
 - [CLI](#cli)
   * [backup](#backup)
   * [upload](#upload)
+  * [upload-glob](#upload-glob)
+  * [upload-conf](#upload-conf)
 - [API](#api)
   * [login](#login)
   * [getTeamPages, getTemplatePages](#getteampages-getteamtemplates)
@@ -89,6 +91,36 @@ skipped[1401ms] ./test/files/igem-logo.png -> http://2016.igem.org/wiki/images/4
 ▶ igemwiki upload -t Toronto --type image --source ./test/files/igem-logo.png --dest igem-logo.png -f
 uploaded[3382ms] ./test/files/igem-logo.png -> http://2016.igem.org/wiki/images/4/4d/T--Toronto--2016_igem-logo.png
 ```
+
+### upload-glob
+
+Upload files matching a pattern with [globby](https://github.com/sindresorhus/globby).
+
+**Dest will be produced by stripping the basename of paths with the appropiate
+extension for that type.** Thus this method will fail if you wish to have control over
+special destinations for some files, in which case [upload-conf](#upload-conf) is
+recommended.
+
+For example, if `./css/*.css` produces `[ './css/styles.css',
+'./css/vendors.css' ]` the dests will be `[ 'styles', 'vendors' ]`
+
+```
+Usage:
+  igemwiki upload-glob [OPTIONS] [ARGS]
+
+Options:
+  -y, --year [NUMBER]    Year to download pages from (Default is current year)
+  -t, --teamName STRING  Team name
+  -g, --glob STRING      Glob pattern for sources
+  -t, --type STRING      Type (page, template, stylesheet, script, or image)
+  -f, --force BOOL       Force upload
+  -h, --help             Display help and usage details
+```
+
+### upload-conf
+
+This will read from a yaml file with `pages`, `templates`, `stylesheets`,
+`scripts` being an array that each have objects including `source` and `dest`.
 
 ## API
 

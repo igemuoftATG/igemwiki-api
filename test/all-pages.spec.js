@@ -9,6 +9,8 @@ should()
 
 describe('All pages', function() {
   describe('With a team with no _', function() {
+    this.timeout(5 * 1000)
+
     const { getTeamPages, getTeamTemplates } = require('../index.js')({})
 
     it('Should return a list of team pages', function() {

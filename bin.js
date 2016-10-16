@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
+const path = require('path')
 const cli = require('cli')
+const Promise = require('bluebird')
+const globby = require('globby')
+
 const igemwikiEntry = require('./index.js')
 
 const program = process.argv[2]
@@ -39,6 +43,42 @@ const programs = {
         dest,
         force
       })).catch(console.error)
+    }
+  },
+  ['upload-glob']: {
+    options: {
+      glob: [ 'g', 'Glob pattern for sources', 'string' ],
+      type: [ 't', 'Type (page, template, stylesheet, script, or image)', 'string' ],
+      force: [ 'f', 'Force upload', 'bool', false ]
+    },
+    main(igemwiki, { glob, type, force }) {
+      const makeDest = (source) => {
+        source = path.basename(source)
+
+        if (type === 'page' || type === 'template') {
+          source = source.replace(/\.html$/, '')
+        } else if (type === 'stylesheet') {
+          source = source.replace(/\.css$/, '')
+        } else if (type === 'script') {
+          source = source.replace(/\.js$/, '')
+        }
+
+        return source
+      }
+
+      Promise.all([
+        globby([ glob ])
+          .then(files => files.map(file => ({
+            type,
+            source: file,
+            dest: makeDest(file),
+            force
+          }))),
+        igemwiki.login()
+      ]).then(([ opts, jar ]) => opts.map(opt => Object.assign({}, opt, { jar })))
+        .then(opts => Promise.map(opts, opt => igemwiki.upload(opt), { concurrency: 1 }))
+        .then(() => console.log('Upload completed'))
+        .catch(console.error)
     }
   }
 }

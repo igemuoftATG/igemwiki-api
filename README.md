@@ -57,11 +57,37 @@ Options:
   -h, --help             Display help and usage details
 ```
 
-```bash
-▶ igemwiki upload -t Toronto --type template --source ./build-live/templates/head.html --dest head
-Username: jmazz
-Password: ************
-uploaded[1973ms] ./build-live/templates/head.html -> http://2016.igem.org/Template:Toronto/head
+*stylesheet*
+```
+▶ igemwiki upload -t Toronto --type stylesheet --source ./test/files/test-stylesheet.css --dest test-stylesheet
+skipped[889ms] ./test/files/test-stylesheet.css -> http://2016.igem.org/Template:Toronto/css/test-stylesheet
+```
+
+*script*
+```
+▶ igemwiki upload -t Toronto --type script --source ./test/files/test-script.js --dest test-script -f
+uploaded[1451ms] ./test/files/test-script.js -> http://2016.igem.org/Template:Toronto/js/test-script
+```
+
+*template*
+```
+▶ igemwiki upload -t Toronto --type template --source ./test/files/test-template.html --dest test-template
+skipped[476ms] ./test/files/test-template.html -> http://2016.igem.org/Template:Toronto/test-template
+```
+
+*page*
+```
+▶ igemwiki upload -t Toronto --type page --source ./test/files/test-upload.html --dest test-upload
+uploaded[2092ms] ./test/files/test-upload.html -> http://2016.igem.org/Team:Toronto/test-upload
+```
+
+*image* (**use filename extension in dest!**)
+```
+▶ igemwiki upload -t Toronto --type image --source ./test/files/igem-logo.png --dest igem-logo.png
+skipped[1401ms] ./test/files/igem-logo.png -> http://2016.igem.org/wiki/images/4/4d/T--Toronto--2016_igem-logo.png
+
+▶ igemwiki upload -t Toronto --type image --source ./test/files/igem-logo.png --dest igem-logo.png -f
+uploaded[3382ms] ./test/files/igem-logo.png -> http://2016.igem.org/wiki/images/4/4d/T--Toronto--2016_igem-logo.png
 ```
 
 ## API

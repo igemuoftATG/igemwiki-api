@@ -5,8 +5,10 @@
 NodeJS and CLI API for interacting with an igem wiki (downloading/uploading pages/stylesheets/scripts/templates/images, etc.)
 
 ```bash
-npm install --save igemwiki-api
+npm install -g igemwiki-api
 ```
+
+**TL;DR: Install Node, see [upload-conf](#upload-conf)**
 
 ## Recipes
 
@@ -15,10 +17,10 @@ See [Recipes](./recipes).
 ## Contents
 
 - [CLI](#cli)
+  * [upload-conf](#upload-conf)
   * [backup](#backup)
   * [upload](#upload)
   * [upload-glob](#upload-glob)
-  * [upload-conf](#upload-conf)
 - [API](#api)
   * [login](#login)
   * [getTeamPages, getTemplatePages](#getteampages-getteamtemplates)
@@ -54,8 +56,9 @@ This will read from a yaml file with `pages`, `templates`, `stylesheets`,
 
 If the value does not contain `:` then it will be evaluated as a glob pattern
 (and `dest` will be created just as it were in `upload-glob`). Else, the format
-is `source:dest`. Explicit mappings with `source:dest` where `source` is the same
-as something that was encountered with a glob patter will take precedence. This
+is `source:dest`. `INDEX` is a special dest that will map to your team home
+page. Explicit mappings with `source:dest` where `source` is the same as
+something that was encountered with a glob pattern will take precedence. This
 lets you glob the majority of files and be explicit to "fix the odd ones".
 
 An example `igemwiki-conf.yaml` might look like:
@@ -64,22 +67,44 @@ An example `igemwiki-conf.yaml` might look like:
 templates:
     - ./build-live/templates/*.html
 stylesheets:
-    - ./build-live/css/*.css
+    - ./build-live/css/*_css
 scripts:
-    - ./build-live/js/*.js
+    - ./build-live/js/*_js
 pages:
     - ./build-live/*.html
     - ./build-live/index.html:INDEX
-    - ./build-live/Silver.html:HP/Silver
-    - ./build-live/Gold.hmtl:HP/Gold
+    - ./build-live/HP-Silver.html:HP/Silver
+    - ./build-live/HP-Gold.html:HP/Gold
 images:
     - ./images/*.{png,jpg}
 ```
 
-Upload then like
+See [igemwiki-conf.yml](https://github.com/igemuoftATG/wiki2016/blob/develop/igemwiki-conf.yml)
+for Toronto's 2016 wiki.
+
+First get a preview of the `{ type, source, dest }` options array:
+
+```
+igemwiki upload-conf -n Toronto --conf igemwiki-conf.yml -p
+```
+
+And then upload each file:
 
 ```
 igemwiki upload-conf -n Toronto --conf igemwiki-conf.yml
+```
+
+```
+Usage:
+  igemwiki upload-conf [OPTIONS] [ARGS]
+
+Options:
+  -y, --year [NUMBER]    Year to download pages from (Default is current year)
+  -n, --team STRING      Team name
+  -f, --force BOOL       Force upload
+  -c, --conf PATH        YAML configuration file
+  -p, --preview BOOL     Preview source/dest pairs before uploading
+  -h, --help             Display help and usage details
 ```
 
 ### upload

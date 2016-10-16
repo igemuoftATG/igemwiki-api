@@ -14,13 +14,55 @@ See [Recipes](./recipes).
 
 ## Contents
 
+- [CLI](#cli)
+  * [backup](#backup)
+  * [upload](#upload)
 - [API](#api)
   * [login](#login)
   * [getTeamPages, getTemplatePages](#getteampages-getteamtemplates)
   * [downloadAll](#downloadall)
-  * [upload](#upload)
+  * [upload](#upload2)
     - [image upload](#image-upload)
-- [CLI](#cli)
+
+## CLI
+
+### backup
+
+Runs `igemwiki.downloadALL({ dir })` behind the scenes.
+
+```
+Usage:
+  igemwiki backup [OPTIONS] [ARGS]
+
+Options:
+  -y, --year [NUMBER]    Year to download pages from (Default is current year)
+  -t, --teamName STRING  Team name
+  -d, --dir [DIR]        Download directory (Default is ./backups)
+  -h, --help             Display help and usage details
+```
+
+### upload
+
+```
+Usage:
+  igemwiki upload [OPTIONS] [ARGS]
+
+Options:
+  -y, --year [NUMBER]    Year to download pages from (Default is current year)
+  -t, --teamName STRING  Team name
+  -s, --source STRING    Source file
+  -d, --dest STRING      Destination
+  -t, --type STRING      Type (page, template, stylesheet, script, or image)
+  -f, --force BOOL       Force upload
+  -h, --help             Display help and usage details
+```
+
+```bash
+▶ igemwiki upload -t Toronto --type template --source ./build-live/templates/head.html --dest head
+Username: jmazz
+Password: ************
+uploaded[1973ms] ./build-live/templates/head.html -> http://2016.igem.org/Template:Toronto/head
+```
 
 ## API
 
@@ -146,7 +188,7 @@ downloadPage({
 
 See [download.spec.js](./test/download.spec.js).
 
-### upload
+<h3 id="upload2">upload</h3>
 
 Upload file contents into pages, templates, or images. If local content matches
 existing live content, the upload will be skipped, unless `force: true` is set.
@@ -195,19 +237,3 @@ login().then(jar => upload({
 })).then(results => console.log(results.target)) // results.target is the direct image link
 ```
 
-## CLI
-
-### backup
-
-Runs `igemwiki.downloadALL({ dir })` behind the scenes.
-
-```
-Usage:
-  igemwiki backup [OPTIONS] [ARGS]
-
-Options:
-  -y, --year [NUMBER]    Year to download pages from (Default is current year)
-  -t, --teamName STRING  Team name
-  -d, --dir [DIR]        Download directory (Default is ./backups)
-  -h, --help             Display help and usage details
-```

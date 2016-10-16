@@ -23,6 +23,23 @@ const programs = {
           process.exit(1)
         })
     }
+  },
+  upload: {
+    options: {
+      source: [ 's', 'Source file', 'string' ],
+      dest: [ 'd', 'Destination', 'string' ],
+      type: [ 't', 'Type (page, template, stylesheet, script, or image)', 'string' ],
+      force: [ 'f', 'Force upload', 'bool', false ]
+    },
+    main(igemwiki, { type, source, dest, force }) {
+      igemwiki.login().then(jar => igemwiki.upload({
+        jar,
+        type,
+        source,
+        dest,
+        force
+      })).catch(console.error)
+    }
   }
 }
 

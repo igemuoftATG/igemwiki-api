@@ -11,7 +11,7 @@ const program = process.argv[2]
 
 const baseOptions = {
   year: [ 'y', 'Year to download pages from', 'int', new Date().getFullYear() ],
-  teamName: [ 't', 'Team name', 'string', undefined ],
+  teamName: [ 'n', 'Team name', 'string', undefined ],
 }
 
 const programs = {
@@ -95,7 +95,7 @@ const options = cli.parse(Object.assign({}, baseOptions, subProgram.options))
 const { year, teamName } = options
 
 if (teamName === undefined) {
-  console.log('Must provide a team name, use -t or --team')
+  console.log('Must provide a team name, use -n or --team')
   process.exit(1)
 }
 

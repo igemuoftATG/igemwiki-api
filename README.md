@@ -38,9 +38,48 @@ Usage:
 
 Options:
   -y, --year [NUMBER]    Year to download pages from (Default is current year)
-  -t, --teamName STRING  Team name
+  -n, --teamName STRING  Team name
   -d, --dir [DIR]        Download directory (Default is ./backups)
   -h, --help             Display help and usage details
+```
+
+### upload-conf
+
+This is the simplest way to get going. By writing a small yaml file and
+installing this tool via npm or Docker, you can begin uploading your entire wiki
+in minutes.
+
+This will read from a yaml file with `pages`, `templates`, `stylesheets`,
+`scripts` being an array that each have objects including `source` and `dest`.
+
+If the value does not contain `:` then it will be evaluated as a glob pattern
+(and `dest` will be created just as it were in `upload-glob`). Else, the format
+is `source:dest`. Explicit mappings with `source:dest` where `source` is the same
+as something that was encountered with a glob patter will take precedence. This
+lets you glob the majority of files and be explicit to "fix the odd ones".
+
+An example `igemwiki-conf.yaml` might look like:
+
+```yaml
+templates:
+    - ./build-live/templates/*.html
+stylesheets:
+    - ./build-live/css/*.css
+scripts:
+    - ./build-live/js/*.js
+pages:
+    - ./build-live/*.html
+    - ./build-live/index.html:INDEX
+    - ./build-live/Silver.html:HP/Silver
+    - ./build-live/Gold.hmtl:HP/Gold
+images:
+    - ./images/*.{png,jpg}
+```
+
+Upload then like
+
+```
+igemwiki upload-conf -n Toronto --conf igemwiki-conf.yml
 ```
 
 ### upload
@@ -51,7 +90,7 @@ Usage:
 
 Options:
   -y, --year [NUMBER]    Year to download pages from (Default is current year)
-  -t, --teamName STRING  Team name
+  -n, --teamName STRING  Team name
   -s, --source STRING    Source file
   -d, --dest STRING      Destination
   -t, --type STRING      Type (page, template, stylesheet, script, or image)
@@ -61,34 +100,34 @@ Options:
 
 *stylesheet*
 ```
-▶ igemwiki upload -t Toronto --type stylesheet --source ./test/files/test-stylesheet.css --dest test-stylesheet
+▶ igemwiki upload -n Toronto --type stylesheet --source ./test/files/test-stylesheet.css --dest test-stylesheet
 skipped[889ms] ./test/files/test-stylesheet.css -> http://2016.igem.org/Template:Toronto/css/test-stylesheet
 ```
 
 *script*
 ```
-▶ igemwiki upload -t Toronto --type script --source ./test/files/test-script.js --dest test-script -f
+▶ igemwiki upload -n Toronto --type script --source ./test/files/test-script.js --dest test-script -f
 uploaded[1451ms] ./test/files/test-script.js -> http://2016.igem.org/Template:Toronto/js/test-script
 ```
 
 *template*
 ```
-▶ igemwiki upload -t Toronto --type template --source ./test/files/test-template.html --dest test-template
+▶ igemwiki upload -n Toronto --type template --source ./test/files/test-template.html --dest test-template
 skipped[476ms] ./test/files/test-template.html -> http://2016.igem.org/Template:Toronto/test-template
 ```
 
 *page*
 ```
-▶ igemwiki upload -t Toronto --type page --source ./test/files/test-upload.html --dest test-upload
+▶ igemwiki upload -n Toronto --type page --source ./test/files/test-upload.html --dest test-upload
 uploaded[2092ms] ./test/files/test-upload.html -> http://2016.igem.org/Team:Toronto/test-upload
 ```
 
 *image* (**use filename extension in dest!**)
 ```
-▶ igemwiki upload -t Toronto --type image --source ./test/files/igem-logo.png --dest igem-logo.png
+▶ igemwiki upload -n Toronto --type image --source ./test/files/igem-logo.png --dest igem-logo.png
 skipped[1401ms] ./test/files/igem-logo.png -> http://2016.igem.org/wiki/images/4/4d/T--Toronto--2016_igem-logo.png
 
-▶ igemwiki upload -t Toronto --type image --source ./test/files/igem-logo.png --dest igem-logo.png -f
+▶ igemwiki upload -n Toronto --type image --source ./test/files/igem-logo.png --dest igem-logo.png -f
 uploaded[3382ms] ./test/files/igem-logo.png -> http://2016.igem.org/wiki/images/4/4d/T--Toronto--2016_igem-logo.png
 ```
 
@@ -110,17 +149,13 @@ Usage:
 
 Options:
   -y, --year [NUMBER]    Year to download pages from (Default is current year)
-  -t, --teamName STRING  Team name
+  -n, --teamName STRING  Team name
   -g, --glob STRING      Glob pattern for sources
   -t, --type STRING      Type (page, template, stylesheet, script, or image)
   -f, --force BOOL       Force upload
   -h, --help             Display help and usage details
 ```
 
-### upload-conf
-
-This will read from a yaml file with `pages`, `templates`, `stylesheets`,
-`scripts` being an array that each have objects including `source` and `dest`.
 
 ## API
 

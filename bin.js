@@ -184,6 +184,13 @@ const programs = {
           .then(opts => Promise.map(opts, opt => igemwiki.upload(opt), { concurrency: 1 }))
           .then(() => console.log('Upload completed'))
         )
+        .then((result) => {
+          if (preview) {
+            const logItem = ({ type, source, dest }) => console.log(`[${type}] ${source} -> ${dest}`)
+
+            Object.keys(result).forEach(key => result[key].forEach(logItem))
+          }
+        })
         .catch(console.error)
     }
   }

@@ -313,6 +313,10 @@ If we run this it will log out:
   '/Users/jmazz/Documents/repos/igemwiki-api/recipes/simple/js/vendor.js' ]
 ```
 
+If you get a `RequestError`, `SSL routines:ssl_choose_client_version:unsupported protocol`, run your file with 
+the flag: `--tls-min-v1.0` as follows: `node --tls-min-v1.0 upload.js`.
+
+
 **Our goal is to create a mapping between filenames and wiki page
 destinations**. So, let's seperate our types:
 
